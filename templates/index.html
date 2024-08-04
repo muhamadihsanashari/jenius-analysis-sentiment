@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Dashboard SA-Jenius</title>
+  <!-- Fonts and icons -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="{{ url_for('static', filename='css/nucleo-icons.css') }}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="{{ url_for('static', filename='css/black-dashboard.css') }}" rel="stylesheet" />
+  <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <style>
+    #loading-prediction img{width: 75px;height: 75px;}
+    #wordcloud {
+        width: 100%;
+        height: 500px;
+        text-align: center;
+        font-family: sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="main-panel">
+      <div class="content" style="padding-bottom: 5px;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card-jenius">
+              <div class="title">
+                <h1 class="text-center text-white mt-4">Analisis Sentimen Bank Digital</h1>
+              </div>
+              
+
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card-jenius">
+                        <div class="card-header card-jenius">
+                            <ul class="nav nav-tabs justify-content-center" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#dashboard" role="tab">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#analisa" role="tab">Analisa</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content text-center">
+                                <div class="tab-pane active" id="home" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                             <div class="px-3 py-3 my-4 text-center">
+                                                <img class="d-block mx-auto mb-4" src="static/img/UBL.png" alt="" width="10%" height="10%">
+                                                <h1 class="display-5 fw-bold">Analisis Sentimen Aplikasi Bank Digital Menggunakan Bidirectional Encoder Representation from Transformer (BERT) dan Support Vector Machine (SVM)</h1>
+                                                <div class="col-lg-6 mx-auto">
+                                                    <p class="lead mb-4 font-14">Muhamad Ihsan Ashari (2111601783)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="dashboard" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-xl-3 mb-50">
+                                            <div class="gradient-style1 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                                                <div class="d-flex flex-wrap align-items-center">
+                                                    <div class="widget-data text-left">
+                                                        <div class="weight-400 font-20">Total Tweet</div>
+                                                        <div class="weight-300 font-30">{{total_tweet}}</div>
+                                                    </div>
+                                                    <div class="widget-icon">
+                                                        <div class="icon"><i class="fab fa-twitter"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 mb-50">
+                                            <div class="gradient-style2 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                                                <div class="d-flex flex-wrap align-items-center">
+                                                    <div class="widget-data text-left">
+                                                        <div class="weight-400 font-20">Total User</div>
+                                                        <div class="weight-300 font-30">{{total_user}}</div>
+                                                    </div>
+                                                    <div class="widget-icon">
+                                                        <div class="icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 mb-50">
+                                            <div class="gradient-style3 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                                                <div class="d-flex flex-wrap align-items-center">
+                                                    <div class="widget-data text-left">
+                                                        <div class="weight-400 font-20">Total Retweet</div>
+                                                        <div class="weight-300 font-30">{{total_retweet_count}}</div>
+                                                    </div>
+                                                    <div class="widget-icon">
+                                                        <div class="icon"><i class="fas fa-retweet" aria-hidden="true"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 mb-50">
+                                            <div class="gradient-style4 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                                                <div class="d-flex flex-wrap align-items-center">
+                                                    <div class="widget-data text-left">
+                                                        <div class="weight-400 font-20">Total Reply</div>
+                                                        <div class="weight-300 font-30">{{total_reply_count}}</div>
+                                                    </div>
+                                                    <div class="widget-icon">
+                                                        <div class="icon"><i class="fas fa-reply" aria-hidden="true"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-12 col-sm-12 mb-20">
+                                            <div class="bg-white box-shadow border-radius-10 height-95-p pt-3">
+                                                <h2 class="font-weight-700 font-24 mb-20 text-dark">Grafik Jumlah Sentimen Berdasarkan Tanggal</h2>
+                                                <div id='sentiment-by-date' class='sentiment-by-date'></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12 col-sm-12 mb-20">
+                                            <div class="card bg-white box-shadow border-radius-10 height-95-p pt-3">
+                                                <h2 class="font-weight-700 font-24 mb-20 text-dark">Distribusi Sentimen</h2>
+                                                <div class="card-header">
+                                                    <ul class="nav nav-tabs justify-content-center" role="tablist">
+                                                        <li class="nav-item cursor-point">
+                                                            <a class="nav-link active cursor-point" data-toggle="tab" href="#sentimentPieChart" role="tab">Pie Chart</a>
+                                                        </li>
+                                                        <li class="nav-item cursor-point">
+                                                            <a class="nav-link cursor-point" data-toggle="tab" href="#sentimentBarChart" role="tab">Bar Chart</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="card-body">
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content text-center">
+                                                        <div class="tab-pane active" id="sentimentPieChart" role="tabpanel">
+                                                            <div id='sentiment-pie' class='sentiment-pie'></div>
+                                                        </div>
+                                                        <div class="tab-pane" id="sentimentBarChart" role="tabpanel">
+                                                            <div id='sentiment-bar' class='sentiment-bar'></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mb-50">
+                                            <div class="bg-white box-shadow border-radius-10 height-100-p pt-3">
+                                                <h2 class="font-weight-700 font-24 mb-20 text-dark">25 Kata Teratas dalam Setiap Sentimen</h2>
+                                                <div id='top-words-group' class='top-words-group mb-50'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mb-50">
+                                            <div class="bg-white box-shadow border-radius-10 height-100-p pt-3">
+                                                <h2 class="font-weight-700 font-24 text-dark">Hasil Preprocessing Data Ulasan Aplikasi Jenius</h2>
+                                                <div id="datasetTable" class="p-3 mb-4"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mb-50">
+                                            <div class="bg-white box-shadow border-radius-10 height-100-p pt-3">
+                                                <h2 class="font-weight-700 font-24 text-dark">Hasil Evaluasi Model BERT-SVM</h2>
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 mb-50">
+                                                        <h4 class="font-weight-700 font-24 text-dark">Confusion Matrix</h4>
+                                                        <div id='cm-chart' class='cm-chart'></div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 mb-50">
+                                                        <h4 class="font-weight-700 font-24 text-dark">Classification Report</h4>
+                                                        <div id='cr-chart' class='cr-chart'></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 mb-50 mx-auto">
+                                                        <h4 class="font-weight-700 font-24 text-dark">ROC AUC Curve</h4>
+                                                        <div id='auc-chart' class='auc-chart'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mb-50">
+                                            <div class="bg-white box-shadow border-radius-10 height-100-p pt-3">
+                                                <h2 class="font-weight-700 font-24 mb-20 text-dark">Hasil Word Embeddings BERT</h2>
+                                                <div id='word-embeddings-chart' class='word-embeddings-chart mb-50'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane" id="analisa" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-6 offset-md-3">
+                                            <div class="bg-white box-shadow border-radius-10 height-100-p">
+                                                <form action=/prediction  method="POST" enctype="multipart/form-data">
+                                                    <div class="form-group d-flex justify-content-center">
+                                                        <label>
+                                                            <input type="file" name="file" id="file" style="display:none" required>
+                                                            <img class="image-upload mt-5" src="{{url_for('static', filename='img/upload.png')}}" width="100" height="100" alt="upload">
+                                                        </label>
+                                                    </div>
+                                                    <div class="container mt-50 text-center px-5 text-justify">
+                                                        Pastikan Anda mengunggah file terkait dengan ulasan pengguna yang terdiri dari kolom berikut ini:
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <ul class="list-group list-group-flush text-center">
+                                                                <li class="list-group-item text-dark">created_at, id_str, full_text, quote_count, reply_count, retweet_count</li>
+                                                                <li class="list-group-item text-dark">favorite_count, lang, user_id_str, conversation_id_str, username, tweet_url</li>
+                                                                <li class="list-group-item text-dark">id, geo, conversation_id, media_url_https, media_type</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center mt-3 mb-50">
+                                                        <input type="submit" class="btn btn-primary text-dark" name="Analisa" value="Analisa" onclick="$('#loading-prediction').show();">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <div id="loading-prediction" style="display:none; margin-top:-50px;"><img src="{{ url_for('static', filename='img/loading-1.gif') }}" alt=""/></div>
+                                                    </div>  
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--   Core JS Files   -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="{{ url_for('static', filename='js/core/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/core/bootstrap.min.js') }}"></script>
+  <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script>
+    var graph_eda1 = {{ fig_sentiment_by_date | safe }};
+    graph_eda1.config={displayModeBar: false};
+    Plotly.plot('sentiment-by-date',graph_eda1,{responsive: true});
+
+    var graph_eda2 = {{ fig_sentiment_pie | safe }};
+    graph_eda2.config={displayModeBar: false};
+    Plotly.plot('sentiment-pie',graph_eda2,{responsive: true});
+
+    var graph_eda3 = {{ fig_sentiment_bar | safe }};
+    graph_eda3.config={displayModeBar: false};
+    Plotly.plot('sentiment-bar',graph_eda3,{responsive: true});
+
+    var graph_eda4 = {{ fig_top_words_group | safe }};
+    graph_eda4.config={displayModeBar: false};
+    Plotly.plot('top-words-group',graph_eda4,{responsive: true});
+
+    var graph_eda5 = {{ cm_viz | safe }};
+    graph_eda5.config={displayModeBar: false};
+    Plotly.plot('cm-chart',graph_eda5,{responsive: true});
+
+    var graph_eda6 = {{ cr_viz | safe }};
+    graph_eda6.config={displayModeBar: false};
+    Plotly.plot('cr-chart',graph_eda6,{responsive: true});
+
+    var graph_eda7 = {{ fig_word_embeddings | safe }};
+    graph_eda7.config={displayModeBar: false};
+    Plotly.plot('word-embeddings-chart',graph_eda7,{responsive: true});
+
+    var graph_eda8 = {{ auc_viz | safe }};
+    graph_eda8.config={displayModeBar: false};
+    Plotly.plot('auc-chart',graph_eda8,{responsive: true});
+  </script>
+  <script>
+    new gridjs.Grid({
+        columns: [
+            { id: 'full_text', name: 'Tweet', sort: true, width: '50%'},
+            { id: 'casefolding', name: 'Casefolding', sort: true, width: '50%'},
+            { id: 'remove_emoticon', name: 'Cleansing + Remove Emoticon', sort: true, width: '50%'},
+            { id: 'normalization', name: 'Tokenizing + Normalization', sort: true, width: '50%'},
+            { id: 'negation_handling', name: 'Negation Handling', sort: true, width: '50%'},
+            { id: 'stopwords', name: 'Stopwords', sort: true, width: '50%'},
+            { id: 'stemming', name: 'Stemming', sort: true, width: '50%'},
+        ],
+        data: {{ data | tojson | safe }},
+        search: {
+            selector: (cell, rowIndex, cellIndex) => [0, 1, 7].includes(cellIndex) ? cell : null,
+        },
+        sort: true,
+        pagination: {
+            enabled: true,
+            limit: 4,
+        },
+        fixedHeader: true,
+        autoWidth: true,
+        height: '400px',
+        }).render(document.getElementById('datasetTable'));
+    </script>
+</body>
+</html>

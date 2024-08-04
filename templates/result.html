@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Dashboard SA-Jenius</title>
+  <!-- Fonts and icons -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="{{ url_for('static', filename='css/nucleo-icons.css') }}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="{{ url_for('static', filename='css/black-dashboard.css') }}" rel="stylesheet" />
+  <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <style>
+    #loading-prediction img{width: 75px;height: 75px;}
+    #wordcloud {
+        width: 100%;
+        height: 400px;
+        text-align: center;
+        font-family: sans-serif;
+    }
+    .nav-tabs>.nav-item>.nav-link.active {
+        color: #FFFFFF;
+    }
+    .card-jenius {
+        border: none; 
+        background: transparent; 
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="main-panel">
+      <div class="content" style="padding-bottom: 5px;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card-jenius">
+              <div class="title">
+                <h1 class="text-center text-white mt-4">Dashboard Analisis Sentimen Aplikasi Jenius</h1>
+              </div>
+              
+              <div class="row">
+                <div class="col-xl-3 mb-50">
+                    <div class="gradient-style1 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <div class="widget-data text-left">
+                                <div class="weight-400 font-20">Total Tweet</div>
+                                <div class="weight-300 font-30">{{total_tweet}}</div>
+                            </div>
+                            <div class="widget-icon">
+                                <div class="icon"><i class="fab fa-twitter"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 mb-50">
+                    <div class="gradient-style2 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <div class="widget-data text-left">
+                                <div class="weight-400 font-20">Total User</div>
+                                <div class="weight-300 font-30">{{total_user}}</div>
+                            </div>
+                            <div class="widget-icon">
+                                <div class="icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 mb-50">
+                    <div class="gradient-style3 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <div class="widget-data text-left">
+                                <div class="weight-400 font-20">Total Retweet</div>
+                                <div class="weight-300 font-30">{{total_retweet_count}}</div>
+                            </div>
+                            <div class="widget-icon">
+                                <div class="icon"><i class="fas fa-retweet" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 mb-50">
+                    <div class="gradient-style4 text-white box-shadow border-radius-10 height-100-p widget-style3">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <div class="widget-data text-left">
+                                <div class="weight-400 font-20">Total Reply</div>
+                                <div class="weight-300 font-30">{{total_reply_count}}</div>
+                            </div>
+                            <div class="widget-icon">
+                                <div class="icon"><i class="fas fa-reply" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card-jenius">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-12 col-sm-12 mb-20">
+                                    <div class="card bg-white box-shadow border-radius-10 height-95-p pt-3">
+                                        <h2 class="font-weight-700 font-24 mb-20 text-dark text-center">25 Kata Teratas dalam Setiap Sentimen</h2>
+                                        <div class="card-header">
+                                            <ul class="nav nav-tabs justify-content-center" role="tablist">
+                                                <li class="nav-item cursor-point">
+                                                    <a class="nav-link active cursor-point" data-toggle="tab" href="#sentimentPosiif" role="tab">Positif</a>
+                                                </li>
+                                                <li class="nav-item cursor-point">
+                                                    <a class="nav-link cursor-point" data-toggle="tab" href="#sentimentNegatif" role="tab">Negatif</a>
+                                                </li>
+                                                <li class="nav-item cursor-point">
+                                                    <a class="nav-link cursor-point" data-toggle="tab" href="#sentimentNetral" role="tab">Netral</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Tab panes -->
+                                            <div class="tab-content text-center">
+                                                <div class="tab-pane active" id="sentimentPosiif" role="tabpanel">
+                                                    <div id='chart-positive' class='chart-positive'></div>
+                                                </div>
+                                                <div class="tab-pane" id="sentimentNegatif" role="tabpanel">
+                                                    <div id='chart-negative' class='chart-negative'></div>
+                                                </div>
+                                                <div class="tab-pane" id="sentimentNetral" role="tabpanel">
+                                                    <div id='chart-neutral' class='chart-neutral'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-4 col-md-12 col-sm-12 mb-20">
+                                    <div class="card bg-white box-shadow border-radius-10 height-95-p pt-3">
+                                        <h2 class="font-weight-700 font-24 mb-20 text-dark text-center">Distribusi Sentimen</h2>
+                                        <div class="card-header">
+                                            <ul class="nav nav-tabs justify-content-center" role="tablist">
+                                                <li class="nav-item cursor-point">
+                                                    <a class="nav-link active cursor-point" data-toggle="tab" href="#sentimentPieChart" role="tab">Pie Chart</a>
+                                                </li>
+                                                <li class="nav-item cursor-point">
+                                                    <a class="nav-link cursor-point" data-toggle="tab" href="#sentimentBarChart" role="tab">Bar Chart</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Tab panes -->
+                                            <div class="tab-content text-center">
+                                                <div class="tab-pane active" id="sentimentPieChart" role="tabpanel">
+                                                    <div id='sentiment-pie' class='sentiment-pie'></div>
+                                                </div>
+                                                <div class="tab-pane" id="sentimentBarChart" role="tabpanel">
+                                                    <div id='sentiment-bar' class='sentiment-bar'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-20">
+                                    <div class="bg-white box-shadow border-radius-10 height-95-p pt-3">
+                                        <h2 class="font-weight-700 font-24 mb-20 text-dark text-center">Wordcloud Ulasan Aplikasi Jenius</h2>
+                                        <div class="row px-3 pb-5">
+                                            <div class="col-lg-4 col-md-12 col-sm-12">
+                                                <div class="bg-white text-center px-2">
+                                                    <div class="title">
+                                                        <h3 class="text-dark text-center">Positif</h3>
+                                                    </div>
+                                                    <div class="wc-body mb-50">
+                                                        <img src="data:image/png;base64,{{ vis_positive }}"  alt="#">
+                                                    </div>
+                                                    <div class="wc-footer"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-12 col-sm-12">
+                                                <div class="bg-white text-center px-2">
+                                                    <div class="title">
+                                                        <h3 class="text-dark text-center">Negatif</h3>
+                                                    </div>
+                                                    <div class="wc-body mb-50">
+                                                        <img src="data:image/png;base64,{{ vis_negative }}" alt="#">
+                                                    </div>
+                                                    <div class="wc-footer"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-12 col-sm-12">
+                                                <div class="bg-white text-center px-2">
+                                                    <div class="title">
+                                                        <h3 class="text-dark text-center">Netral</h3>
+                                                    </div>
+                                                    <div class="wc-body mb-50">
+                                                        <img src="data:image/png;base64,{{ vis_neutral }}" alt="#">
+                                                    </div>
+                                                    <div class="wc-footer"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-20">
+                                    <div class="bg-white box-shadow border-radius-10 height-95-p pt-3">
+                                        <h2 class="font-weight-700 font-24 mb-20 text-dark text-center">Grafik Jumlah Sentimen Berdasarkan Tanggal</h2>
+                                        <div id='sentiment-by-date' class='sentiment-by-date mb-50'></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-50">
+                                    <div class="bg-white box-shadow border-radius-10 height-100-p pt-3">
+                                        <h2 class="font-weight-700 font-24 text-dark text-center">Data Ulasan Aplikasi Jenius</h2>
+                                        <div id="datasetTable" class="p-3 mb-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--   Core JS Files   -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="{{ url_for('static', filename='js/core/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/core/bootstrap.min.js') }}"></script>
+  <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script>
+    var graph_eda1 = {{ fig_sentiment_by_date | safe }};
+    graph_eda1.config={displayModeBar: false};
+    Plotly.plot('sentiment-by-date',graph_eda1,{responsive: true});
+
+    var graph_eda2 = {{ fig_sentiment_pie | safe }};
+    graph_eda2.config={displayModeBar: false};
+    Plotly.plot('sentiment-pie',graph_eda2,{responsive: true});
+
+    var graph_eda3 = {{ fig_sentiment_bar | safe }};
+    graph_eda3.config={displayModeBar: false};
+    Plotly.plot('sentiment-bar',graph_eda3,{responsive: true});
+
+    var graph_eda4 = {{ fig_top_25_words_positive | safe }};
+    graph_eda4.config={displayModeBar: false};
+    Plotly.plot('chart-positive',graph_eda4,{responsive: true});
+    
+    var graph_eda5 = {{ fig_top_25_words_negative | safe }};
+    graph_eda5.config={displayModeBar: false};
+    Plotly.plot('chart-negative',graph_eda5,{responsive: true});
+
+    var graph_eda6 = {{ fig_top_25_words_neutral | safe }};
+    graph_eda6.config={displayModeBar: false};
+    Plotly.plot('chart-neutral',graph_eda6,{responsive: true});
+  </script>
+  <script>
+    new gridjs.Grid({
+        columns: [
+            { id: 'username', name: 'Username', sort: true},
+            { id: 'full_text', name: 'Tweet', sort: true},
+            { id: 'reply_count', name: 'Reply', sort: true},
+            { id: 'retweet_count', name: 'Retweet', sort: true},
+            { id: 'favorite_count', name: 'Favorite', sort: true},
+            { id: 'sentiment', name: 'Sentimen', sort: true},
+            { id: 'prediksi_sentiment', name: 'Predicksi Sentimen', sort: true},
+        ],
+        data: {{ data | tojson | safe }},
+        search: {
+            selector: (cell, rowIndex, cellIndex) => [0, 1, 7].includes(cellIndex) ? cell : null,
+        },
+        sort: true,
+        pagination: {
+            enabled: true,
+            limit: 4,
+        },
+        fixedHeader: true,
+        autoWidth: true,
+        height: '400px',
+        }).render(document.getElementById('datasetTable'));
+    </script>
+</body>
+</html>
